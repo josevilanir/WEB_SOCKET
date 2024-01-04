@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebSocket Client</title>
+    <script>
+      let ws; // Mova a variável para fora da função para que ela seja compartilhada
+
+      function connect() {
+        ws = new WebSocket("ws://127.0.0.1:8081");
+
+        ws.onopen = () => {
+          console.log("Connected to the server");
+        };
+
+        ws.onmessage = (event) => {
+          console.log(`Received: ${event.data}`);
+        };
+
+        ws.onclose = () => {
+          console.log("Disconnected from the server");
+        };
+      }
+
+      function sendMessage() {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+          let message = document.getElementById("message").value;
+          ws.send(message);
+          console.log(`Sent: ${message}`);
+        } else {
+          console.log("WebSocket is not open. Please connect first.");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <button onclick="connect()">Connect</button>
+    <input type="text" id="message" />
+    <button onclick="sendMessage()">Send</button>
+  </body>
+</html>
